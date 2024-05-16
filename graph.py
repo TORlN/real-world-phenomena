@@ -5,16 +5,25 @@ from collections.abc import Iterable
 
 class Graph:
 	def __init__(self, num_nodes: int, edges: Iterable[tuple[int, int]]):
-		pass
+		self.nodes = set(range(num_nodes))
+		self.edges = set()
+		for edge in edges:
+			self.edges.add(edge)
+			
 
 	def get_num_nodes(self) -> int:
-		raise NotImplementedError
-
+		return len(self.nodes)
 	def get_num_edges(self) -> int:
-		raise NotImplementedError
+		return len(self.edges)
 
 	def get_neighbors(self, node: int) -> Iterable[int]:
-		raise NotImplementedError
+		neighbors = set()
+		for edge in self.edges:
+			if edge[0] == node:
+				neighbors.add(edge[1])
+			if edge[1] == node:
+				neighbors.add(edge[0])
+		return neighbors
 
 	# feel free to define new methods in addition to the above
 	# fill in the definitions of each required member function (above),
