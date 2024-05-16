@@ -9,6 +9,16 @@ class Graph:
 		self.edges = set()
 		for edge in edges:
 			self.edges.add(edge)
+		self.neighbor_dict = {}
+		for node in self.nodes:
+			self.neighbor_dict[node] = set()
+			neighbors = set()
+			for edge in self.edges:
+				if edge[0] == node:
+					neighbors.add(edge[1])
+				if edge[1] == node:
+					neighbors.add(edge[0])
+			self.neighbor_dict[node] = neighbors
 			
 
 	def get_num_nodes(self) -> int:
@@ -17,13 +27,7 @@ class Graph:
 		return len(self.edges)
 
 	def get_neighbors(self, node: int) -> Iterable[int]:
-		neighbors = set()
-		for edge in self.edges:
-			if edge[0] == node:
-				neighbors.add(edge[1])
-			if edge[1] == node:
-				neighbors.add(edge[0])
-		return neighbors
+		return self.neighbor_dict[node]
 
 	# feel free to define new methods in addition to the above
 	# fill in the definitions of each required member function (above),
