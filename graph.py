@@ -6,19 +6,11 @@ from collections.abc import Iterable
 class Graph:
 	def __init__(self, num_nodes: int, edges: Iterable[tuple[int, int]]):
 		self.nodes = set(range(num_nodes))
-		self.edges = set()
-		for edge in edges:
-			self.edges.add(edge)
-		self.neighbor_dict = {}
-		for node in self.nodes:
-			self.neighbor_dict[node] = set()
-			neighbors = set()
-			for edge in self.edges:
-				if edge[0] == node:
-					neighbors.add(edge[1])
-				if edge[1] == node:
-					neighbors.add(edge[0])
-			self.neighbor_dict[node] = neighbors
+		self.edges = set(edges)
+		self.neighbor_dict = {node: set() for node in self.nodes}
+		for u, v in self.edges:
+			self.neighbor_dict[u].add(v)
+			self.neighbor_dict[v].add(u)
 			
 
 	def get_num_nodes(self) -> int:
