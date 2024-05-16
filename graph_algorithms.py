@@ -25,7 +25,6 @@ def get_clustering_coefficient(graph: Graph) -> float:
     return 3 * triangles / two_edges
 
 
-
 def get_degree_distribution(graph: Graph) -> dict[int, int]:
 	degree_dist = {}
 	for node in graph.nodes:
@@ -34,7 +33,6 @@ def get_degree_distribution(graph: Graph) -> dict[int, int]:
 			degree_dist[degree] += 1
 		else:
 			degree_dist[degree] = 1
-	return degree_dist
 
 def bfs(graph, r):
 	visited = set()
@@ -87,9 +85,7 @@ def degree_degeneracy(graph):
     N = {v: [] for v in graph.nodes}
     for v, d in degree.items():
         D[d].append(v)
-
     k = 0
-
     for _ in range(len(graph.nodes)):
         i = 0
         while not D[i]:
