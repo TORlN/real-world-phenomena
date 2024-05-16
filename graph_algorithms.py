@@ -81,10 +81,20 @@ def compute_degrees(graph):
 def degree_degeneracy(graph):
     L = []
     degree = compute_degrees(graph)
-    max_degree = max(degree.values()) if degree else 0
-    D = [[] for _ in range(max_degree + 1)]
+    max_degree = 0
+    if degree:
+        for d in degree.values():
+            if d > max_degree:
+                max_degree = d
+    
+    D = []
+    for _ in range(max_degree + 1):
+        D.append([])
+
     H = set()
-    N = {v: [] for v in graph.nodes}
+    N = {}
+    for v in graph.nodes:
+        N[v] = []
 
     for v, d in degree.items():
         D[d].append(v)
