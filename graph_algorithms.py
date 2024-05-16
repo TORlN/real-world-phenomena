@@ -6,7 +6,10 @@ from itertools import combinations
 from collections import deque, defaultdict
 
 def get_diameter(graph: Graph) -> int:
-    r = random.randint(0, len(graph.nodes) - 1)
+    if not graph.nodes:
+        return 0
+
+    r = random.choice(list(graph.nodes))
     d_max = 0
     while True:
         w, dist = bfs(graph, r)
@@ -41,14 +44,15 @@ def bfs(graph, r):
     
     while queue:
         s = queue.popleft()
-        for i in graph.get_neighbors(s):
-            if i not in visited:
-                queue.append(i)
-                visited.add(i)
-                dist[i] = dist[s] + 1
-                if dist[i] > max_dist:
-                    max_dist = dist[i]
-                    farthest_node = i
+        current_dist = dist[s]
+        for neighbor in graph.get_neighbors(s):
+            if neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+                dist[neighbor] = current_dist + 1
+                if dist[neighbor] > max_dist:
+                    max_dist = dist[neighbor]
+                    farthest_node = neighbor
     
     return farthest_node, max_dist
 
@@ -77,7 +81,8 @@ def compute_degrees(graph):
 def degree_degeneracy(graph):
     L = []
     degree = compute_degrees(graph)
-    D = [[] for _ in range(len(graph.nodes) + 1)]
+    max_degree = max(degree.values()) if degree else 0
+    D = [[] for _ in range(max_degree + 1)]
     H = set()
     N = {v: [] for v in graph.nodes}
 
