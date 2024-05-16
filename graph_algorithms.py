@@ -98,16 +98,19 @@ def degree_degeneracy(graph):
         i = 0
         while not D[i]:
             i += 1
-        k = max(k, i)
-        v = D[i].pop()
-        L.appendleft(v)
-        H.add(v)
-        for w in graph.get_neighbors(v):
-            if w not in H:
-                old_degree = degree[w]
-                new_degree = old_degree - 1
-                degree[w] = new_degree
-                D[old_degree].remove(w)
-                D[new_degree].add(w)
-                N[v].append(w)
+            if i >= len(D):
+                  break
+        else:
+            k = max(k, i)
+            v = D[i].pop()
+            L.appendleft(v)
+            H.add(v)
+            for w in graph.get_neighbors(v):
+                if w not in H:
+                    old_degree = degree[w]
+                    new_degree = old_degree - 1
+                    degree[w] = new_degree
+                    D[old_degree].remove(w)
+                    D[new_degree].add(w)
+                    N[v].append(w)
     return list(L), k, N
