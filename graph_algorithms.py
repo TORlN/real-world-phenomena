@@ -33,7 +33,7 @@ def get_degree_distribution(graph: Graph) -> dict[int, int]:
 			degree_dist[degree] += 1
 		else:
 			degree_dist[degree] = 1
-
+	return degree_dist
 def bfs(graph, r):
 	visited = set()
 	queue = []
