@@ -71,13 +71,14 @@ def num_two_edge(graph):
 def num_triangles(graph):
     L, degeneracy, N = degree_degeneracy(graph)
     triangle_count = 0
-    neighbors_dict = {v: set(graph.get_neighbors(v)) for v in graph.nodes}
     for v in L:
-        neighbors_v = neighbors_dict[v]
-        for u, w in combinations(neighbors_v, 2):
-            if (u, w) in graph.edges or (w, u) in graph.edges:
-                triangle_count += 1
-    return triangle_count // 3
+        neighbors_v = N[v]
+        for u in neighbors_v:
+            for w in neighbors_v:
+                if u < w and (u, w) in graph.edges:
+                    triangle_count += 1
+
+    return triangle_count
 
 def compute_degrees(graph):
 	degree_dict = {}

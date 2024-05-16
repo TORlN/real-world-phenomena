@@ -1,4 +1,6 @@
 import random
+import cProfile
+import pstats
 from graph import Graph
 import graph_algorithms as ga
 
@@ -26,28 +28,37 @@ def generate_sparse_graph(num_nodes, num_edges):
             edges.add((v, u))
     return Graph(num_nodes, list(edges))
 
-# Test case generation
-num_nodes = 1000 
-num_edges = 5000  
+def main():
+    # Test case generation
+    num_nodes = 1000 
+    num_edges = 5000  
 
-random_graph = generate_random_graph(num_nodes, num_edges)
-complete_graph = generate_complete_graph(num_nodes)
-sparse_graph = generate_sparse_graph(num_nodes, num_edges // 10)
+    random_graph = generate_random_graph(num_nodes, num_edges)
+    complete_graph = generate_complete_graph(num_nodes)
+    sparse_graph = generate_sparse_graph(num_nodes, num_edges // 10)
 
-# Print the number of nodes and edges to verify
-print("Random Graph:", random_graph.get_num_nodes(), "nodes,", random_graph.get_num_edges(), "edges")
-print("Complete Graph:", complete_graph.get_num_nodes(), "nodes,", complete_graph.get_num_edges(), "edges")
-print("Sparse Graph:", sparse_graph.get_num_nodes(), "nodes,", sparse_graph.get_num_edges(), "edges")
+    # Print the number of nodes and edges to verify
+    print("Random Graph:", random_graph.get_num_nodes(), "nodes,", random_graph.get_num_edges(), "edges")
+    print("Complete Graph:", complete_graph.get_num_nodes(), "nodes,", complete_graph.get_num_edges(), "edges")
+    print("Sparse Graph:", sparse_graph.get_num_nodes(), "nodes,", sparse_graph.get_num_edges(), "edges")
 
-# Run functions on generated graphs
-print("Diameter of Random Graph:", ga.get_diameter(random_graph))
-print("Clustering Coefficient of Random Graph:", ga.get_clustering_coefficient(random_graph))
-print("Degree Distribution of Random Graph:", ga.get_degree_distribution(random_graph))
+    # Run functions on generated graphs
+    print("Diameter of Random Graph:", ga.get_diameter(random_graph))
+    print("Clustering Coefficient of Random Graph:", ga.get_clustering_coefficient(random_graph))
+    print("Degree Distribution of Random Graph:", ga.get_degree_distribution(random_graph))
 
-print("Diameter of Complete Graph:", ga.get_diameter(complete_graph))
-print("Clustering Coefficient of Complete Graph:", ga.get_clustering_coefficient(complete_graph))
-print("Degree Distribution of Complete Graph:", ga.get_degree_distribution(complete_graph))
+    print("Diameter of Complete Graph:", ga.get_diameter(complete_graph))
+    print("Clustering Coefficient of Complete Graph:", ga.get_clustering_coefficient(complete_graph))
+    print("Degree Distribution of Complete Graph:", ga.get_degree_distribution(complete_graph))
 
-print("Diameter of Sparse Graph:", ga.get_diameter(sparse_graph))
-print("Clustering Coefficient of Sparse Graph:", ga.get_clustering_coefficient(sparse_graph))
-print("Degree Distribution of Sparse Graph:", ga.get_degree_distribution(sparse_graph))
+    print("Diameter of Sparse Graph:", ga.get_diameter(sparse_graph))
+    print("Clustering Coefficient of Sparse Graph:", ga.get_clustering_coefficient(sparse_graph))
+    print("Degree Distribution of Sparse Graph:", ga.get_degree_distribution(sparse_graph))
+
+if __name__ == "__main__":
+    profiler = cProfile.Profile()
+    profiler.enable()
+    main()
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats(20)  # Print the top 20 functions by cumulative time
