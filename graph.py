@@ -28,6 +28,8 @@ class Graph:
 
 	def get_neighbors(self, node: int) -> Iterable[int]:
 		return self.neighbor_dict[node]
+	def get_degree(self, node: int) -> int:
+		return len(self.neighbor_dict[node])
 
 	# feel free to define new methods in addition to the above
 	# fill in the definitions of each required member function (above),
