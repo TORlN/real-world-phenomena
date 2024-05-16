@@ -8,8 +8,9 @@ from itertools import combinations
 def get_diameter(graph: Graph) -> int:
 	r = random.randint(0, len(graph.nodes) - 1)
 	d_max = 0
+	cache = {}
 	while True:
-		w, dist = bfs(graph, r)
+		w, dist = bfs(graph, r, cache)
 		if dist > d_max:
 			r = w
 			d_max = dist
@@ -34,7 +35,7 @@ def get_degree_distribution(graph: Graph) -> dict[int, int]:
 			degree_dist[degree] = 1
 	return degree_dist
 
-def bfs(graph, r, cache = {}):
+def bfs(graph, r, cache):
     if r in cache:
         return cache[r]
     
@@ -62,7 +63,7 @@ def bfs(graph, r, cache = {}):
 def num_two_edge(graph):
 	num_two_edge = 0
 	for node in graph.nodes:
-		degree = len(graph.get_neighbors(node))
+		degree = graph.get_degree(node)
 		num_two_edge += degree * (degree - 1) // 2
 
 	return num_two_edge
@@ -80,12 +81,12 @@ def num_triangles(graph):
 def compute_degrees(graph):
 	degree_dict = {}
 	for node in graph.nodes:
-		degree_dict[node] = len(graph.get_neighbors(node))
+		degree_dict[node] = graph.get_degree(node)
 	return degree_dict
 
 def degree_degeneracy(graph):
     num_nodes = len(graph.nodes)
-    L = []
+    L = deque()
     degree = compute_degrees(graph)
     D = [set() for _ in range(num_nodes + 1)]
     H = set()
@@ -99,7 +100,7 @@ def degree_degeneracy(graph):
             i += 1
         k = max(k, i)
         v = D[i].pop()
-        L.insert(0, v)
+        L.appendleft(v)
         H.add(v)
         for w in graph.get_neighbors(v):
             if w not in H:
@@ -109,4 +110,4 @@ def degree_degeneracy(graph):
                 D[old_degree].remove(w)
                 D[new_degree].add(w)
                 N[v].append(w)
-    return L, k, N
+    return list(L), k, N
