@@ -15,7 +15,7 @@ def test_graph_algorithms(graph):
     return clustering_coefficient, degree_distribution, diameter
 
 def experiment_and_collect_data():
-    sizes = np.logspace(3, 5, num=10, dtype=int)
+    sizes = np.logspace(1, 6, num=20, dtype=int)
     specific_sizes = np.array([1000, 10000, 100000])
     sizes = list(np.unique(np.concatenate((sizes, specific_sizes))))
     diameters = []
@@ -77,6 +77,10 @@ def plot_results(sizes, diameters, clustering_coefficients, degree_distributions
     for i, degree_distribution in enumerate(degree_distributions):
         degrees = np.array(list(degree_distribution.keys()))
         counts = np.array(list(degree_distribution.values()))
+        if sizes[i] == 1000 or sizes[i] == 10000 or sizes[i] == 100000:
+            pass
+        else:
+            continue
 
         # Linear scale degree distribution
         plt.figure()
